@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linear_algebra_nikkibarry"
+version = "0.0.0.1"
+authors = [{ name = "Nikki Barry", email = "nikkibarry@acm.org" }]
+description = "A linear algebra package"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+license = { file = "LICENSE" }
+
+[project.optional-dependencies]
+test = ["mypy", "pytest", "pytest-cov", "coverage", "tox"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.mypy]
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
+packages = ["linear_algebra"]
+exclude = ["__init__.py", "test*.py"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests/unit"]
+
+[tool.coverage.run]
+source = ["src/linear_algebra"]
+branch = true
+omit = ["__init__.py"]
+
+[tool.coverage.report]
+fail_under = 90
+exclude_also = [
+  "if __name == .__main__.:",
+  "def __str__",
+  "def __repr__",
+  "def __hash__",
+  "raise NotImplementedError",
+  "@(abc\\.)?abstractmethod",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist =
+    clean,
+    py312,
+    type,
+
+[gh-actions]
+python =
+    3.12: clean, py312, type
+
+[testenv]
+deps =
+    pytest
+    pytest-cov
+depends = {py312}: clean
+commands = pytest --cov --cov-append --cov-report=term-missing
+
+[testenv:clean]
+deps = coverage
+skip_install = true
+commands = coverage erase
+
+[testenv:type]
+deps = mypy
+commands =
+    mypy
+"""

@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+
+# Python environments
+.env/
+env/
+.venv/
+venv/
+
+# Build / distribution / packaging
+build/
+.eggs/
+lib/
+lib64.
+*.egg-info/
+dist/
+
+# Unit Test / coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache
+.mypy_cache/
+coverage.xml
+
